@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <div class="container">
+    <div class="container" id="content">
         <div class="row">
             <h1>Проверка наличия сертификатов Минцифры</h1>
 
@@ -20,6 +20,36 @@
             <p>Вы можете использовать этот пример для реализации на своем сайте, например, если у вас реализован
                 аквайринг через Сбер и есть вероятность, что браузер клиента не сможет отобразить страницу платежного
                 гейта.</p>
+
+            <h2>Как использовать.</h2>
+            <div>
+                <ol>
+                    <li>Включите в клиентский код своего сайта фрагмент, приведённый ниже.</li>
+                    <li>Реализуйте отображение предупреждения тем способом, который принят у вас на сайте.</li>
+                    <li>Устанавливайте в коде куку "skipSslCheck", если не хотите допекать пользователя сообщением на
+                        каждой странице.</li>
+                    <li>Профит.</li>
+                </ol>
+            </div>
+            <pre>
+    const e = new XMLHttpRequest
+    e.open("GET", "https://www.sberbank.ru/", !0),
+    e.addEventListener("load", (() => {
+        // действие если всё ОК
+    }
+    )),
+    e.onerror = function () {
+        if (!document.cookie.match(/^(.*;)?\s*skipSslCheck\s*=\s*[^;]+(.*)?$/)) {
+            // действие, если корневых нет.
+        }
+    },
+    e.send()
+            </pre>
+
+            <h2>Дисклаймер</h2>
+            <p>Да, я знаю, что в модальном окне ссылка на Сбер с https в начале.</p>
+            <p>Да,я понимаю, что в идеале она должна быть кликабельной.</p>
+            <p>Я ничего с этим делать не буду, это демо. Допиливайте под себя как надо. Я ни разу не фронтэндер, пример основан на коде с сайта Сбера.</p>
 
             <h2>Об авторе</h2>
             <ul class="list-group">
@@ -65,17 +95,16 @@
 
         const e = new XMLHttpRequest;
         e.open("GET", "https://www.sberbank.ru/", !0),
-            e.addEventListener("load", (() => {
-                console.log("Success");
+        e.addEventListener("load", (() => {
+            console.log("Success");
+        }
+        )),
+        e.onerror = function () {
+            if (!document.cookie.match(/^(.*;)?\s*skipSslCheck\s*=\s*[^;]+(.*)?$/)) {
+                myModal.show();
             }
-            )),
-            e.onerror = function () {
-                if (!document.cookie.match(/^(.*;)?\s*skipSslCheck\s*=\s*[^;]+(.*)?$/)) {
-                    myModal.show();
-                }
-            }
-            ,
-            e.send()
+        },
+        e.send()
     </script>
 
 </body>
